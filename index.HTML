@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Paris - Tu hogar lejos de casa</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: #222;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF5A5F;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 40%;
+        }
+        
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 0 10px;
+        }
+        
+        .search-icon {
+            background-color: #FF5A5F;
+            color: white;
+            border-radius: 50%;
+            padding: 8px;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+        }
+        
+        .nav-links .profile {
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Hero section */
+        .hero {
+            position: relative;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../img/paris.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .btn {
+            background-color: #FF5A5F;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background-color 0.3s;
+            z-index: 4;
+            position: relative;
+        }
+        
+        .btn:hover {
+            background-color: #e74347;
+        }
+        
+        /* Categories */
+        .categories {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-card {
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .category-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .category-card h3 {
+            font-size: 18px;
+        }
+        
+        /* Featured Rooms */
+        .featured-rooms {
+            padding: 60px 0;
+            background-color: #f7f7f7;
+        }
+        
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .room-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .room-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .room-info {
+            padding: 20px;
+        }
+        
+        .room-info h3 {
+            margin-bottom: 10px;
+        }
+        
+        .room-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .room-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .price {
+            font-weight: bold;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 60px 0;
+        }
+        
+        .testimonial-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .testimonial-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .testimonial-card {
+            flex: 0 0 350px;
+            scroll-snap-align: start;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            padding: 80px 0;
+            background-color: #FF5A5F;
+            color: white;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            background-color: #222;
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 60px 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #FF5A5F;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .rooms-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+                border-radius: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Hotel Paris</div>
+            <div class="search-bar">
+                <input type="text" placeholder="¿Dónde quieres alojarte?">
+                <div class="search-icon">🔍</div>
+            </div>
+            <div class="nav-links">
+                <a href="#">Convertirse en anfitrión</a>
+                <div class="profile">
+                    <span>☰</span>
+                    <span>👤</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Bienvenido a Hotel Paris</h1>
+            <p>Descubre el alojamiento perfecto en la ciudad del amor</p>
+            <a href="http://127.0.0.1:5500/html/PROYECTOEXPLORAR.HTML" class="btn">Explorar habitaciones</a>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories container">
+        <h2 class="section-title">Habitaciones por categoría</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <img src="../img/lujo.jpg" alt="Lujo">
+                <h3>Habitaciones de lujo</h3>
+                <p>Experiencia premium con los mejores servicios y comodidades exclusivas.</p>
+            </div>
+            <div class="category-card">
+                <img src="../img/ciudad.jpeg" alt="Vista a la ciudad">
+                <h3>Vista a la ciudad</h3>
+                <p>Disfruta de impresionantes panorámicas de París desde tu habitación.</p>
+            </div>
+            <div class="category-card">
+                <img src="../img/terraza.jpg" alt="Terraza">
+                <h3>Con terraza</h3>
+                <p>Relájate al aire libre con una terraza privada y vistas espectaculares.</p>
+            </div>
+            <div class="category-card">
+                <img src="../img/familiar.jpg" alt="Familiar">
+                <h3>Familiar</h3>
+                <p>Habitaciones amplias y cómodas diseñadas para familias con niños.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Rooms Section -->
+    <section class="featured-rooms">
+        <div class="container">
+            <h2 class="section-title">Habitaciones destacadas</h2>
+            <div class="rooms-grid">
+                <div class="room-card">
+                    <img src="../img/Suite.jpg" alt="Habitación Suite">
+                    <div class="room-info">
+                        <h3>Suite Eiffel</h3>
+                        <p>Disfruta de impresionantes vistas a la Torre Eiffel</p>
+                        <div class="room-meta">
+                            <div class="rating">
+                                ★★★★★ <span>4.95</span>
+                            </div>
+                            <div class="price">€250/noche</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-card">
+                    <img src="../img/Deluxe.jpg" alt="Habitación Deluxe">
+                    <div class="room-info">
+                        <h3>Deluxe Louvre</h3>
+                        <p>A pocos pasos del museo del Louvre</p>
+                        <div class="room-meta">
+                            <div class="rating">
+                                ★★★★★ <span>4.82</span>
+                            </div>
+                            <div class="price">€220/noche</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-card">
+                    <img src="../img/Clásica.jpg" alt="Habitación Clásica">
+                    <div class="room-info">
+                        <h3>Clásica Montmartre</h3>
+                        <p>Encanto parisino en el corazón de Montmartre</p>
+                        <div class="room-meta">
+                            <div class="rating">
+                                ★★★★★ <span>4.78</span>
+                            </div>
+                            <div class="price">€180/noche</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials container">
+        <h2 class="section-title">Lo que dicen nuestros huéspedes</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial-card">
+                <p>"Una experiencia maravillosa. Las habitaciones son hermosas y el servicio es impecable. ¡Definitivamente volveré!"</p>
+                <div class="testimonial-author">
+                    <div>
+                        <strong>Maria Rodríguez</strong>
+                        <div>España</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>"Mi estancia en Hotel Paris fue perfecta. La ubicación es inmejorable y las vistas desde la habitación eran espectaculares."</p>
+                <div class="testimonial-author">
+                    <div>
+                        <strong>John Smith</strong>
+                        <div>Estados Unidos</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>"El desayuno es delicioso y el personal extremadamente amable. Una joya en el corazón de París."</p>
+                <div class="testimonial-author">
+                    <div>
+                        <strong>Hiroshi Tanaka</strong>
+                        <div>Japón</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Recibe nuestras mejores ofertas</h2>
+            <p>Suscríbete a nuestro boletín para recibir ofertas exclusivas y descuentos especiales directamente en tu bandeja de entrada.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Tu correo electrónico">
+                <button type="submit">Suscribirse</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Hotel Paris</h3>
+                    <ul>
+                        <li><a href="#">Sobre nosotros</a></li>
+                        <li><a href="#">Habitaciones</a></li>
+                        <li><a href="#">Servicios</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Comunidad</h3>
+                    <ul>
+                        <li><a href="#">Programa de referidos</a></li>
+                        <li><a href="#">Afiliados</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Foro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Anfitrión</h3>
+                    <ul>
+                        <li><a href="#">Conviértete en anfitrión</a></li>
+                        <li><a href="#">Recursos</a></li>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Soporte</h3>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Seguridad</a></li>
+                        <li><a href="#">Opciones de cancelación</a></li>
+                        <li><a href="#">COVID-19</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Hotel Paris. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // JavaScript para funcionalidad básica
+        
+        // Función para el buscador
+        document.querySelector('.search-icon').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm) {
+                alert('Buscando: ' + searchTerm);
+                // Aquí iría la lógica real de búsqueda
+            }
+        });
+        
+        // Animación de scroll suave para los enlaces
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Simulación de carga de más habitaciones
+        let roomsLoaded = 3;
+        const loadMoreRooms = () => {
+            // En una aplicación real, esto cargaría más habitaciones desde una API
+            const roomNames = [
+                "Junior Suite Seine", 
+                "Familiar Notre Dame", 
+                "Romántica Champs-Élysées"
+            ];
+            const roomPrices = ["€195/noche", "€210/noche", "€240/noche"];
+            const roomDesc = [
+                "Elegante suite con vistas al río Sena", 
+                "Amplia habitación ideal para familias cerca de Notre Dame", 
+                "Perfecta para parejas en la famosa avenida"
+            ];
+            const ratings = ["4.79", "4.85", "4.92"];
+            
+            const roomsGrid = document.querySelector('.rooms-grid');
+            
+            for (let i = 0; i < 3; i++) {
+                if (roomsLoaded >= 9) break;
+                
+                const roomCard = document.createElement('div');
+                roomCard.className = 'room-card';
+                roomCard.innerHTML = `
+                    <img src="/api/placeholder/300/200" alt="Habitación">
+                    <div class="room-info">
+                        <h3>${roomNames[i]}</h3>
+                        <p>${roomDesc[i]}</p>
+                        <div class="room-meta">
+                            <div class="rating">
+                                ★★★★★ <span>${ratings[i]}</span>
+                            </div>
+                            <div class="price">${roomPrices[i]}</div>
+                        </div>
+                    </div>
+                `;
+                
+                roomsGrid.appendChild(roomCard);
+                roomsLoaded++;
+            }
+        };
+        
+        // Efecto de desplazamiento en las testimoniales
+        const testimonialSlider = document.querySelector('.testimonial-slider');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        testimonialSlider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - testimonialSlider.offsetLeft;
+            scrollLeft = testimonialSlider.scrollLeft;
+        });
+        
+        testimonialSlider.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        
+        testimonialSlider.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        
+        testimonialSlider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - testimonialSlider.offsetLeft;
+            const walk = (x - startX) * 2;
+            testimonialSlider.scrollLeft = scrollLeft - walk;
+        });
+        
+        // Validación simple del formulario de newsletter
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                alert('Por favor, introduce un correo electrónico válido.');
+                return;
+            }
+            
+            alert('¡Gracias por suscribirte! Recibirás nuestras mejores ofertas.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

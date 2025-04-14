@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Paris - Explorar Habitaciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: #222;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF5A5F;
+        }
+        
+        .back-btn {
+            background-color: #FF5A5F;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #e74347;
+        }
+        
+        /* Room Grid */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+        
+        .room-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .room-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .room-info {
+            padding: 20px;
+        }
+        
+        .room-info h3 {
+            margin-bottom: 10px;
+            color: #FF5A5F;
+        }
+        
+        .room-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .room-amenities {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .amenity {
+            background-color: #f4f4f4;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+        }
+        
+        .btn {
+            background-color: #FF5A5F;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e74347;
+        }
+        
+        /* Modal para detalles de habitación */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Subscription Section */
+        .subscription-section {
+            background-color: #FF5A5F;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .subscription-section h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .subscription-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .subscription-form input {
+            flex-grow: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+        }
+        
+        .subscription-form .btn {
+            background-color: white;
+            color: #FF5A5F;
+        }
+        
+        .subscription-form .btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            margin: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .subscription-form {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                margin: 0;
+                width: 95%;
+                height: 100%;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Hotel Paris</div>
+            <a href="http://127.0.0.1:5500/html/PROYECTO.HTML" class="back-btn">Volver a Inicio</a>
+        </div>
+    </header>
+    
+    <!-- Habitaciones -->
+    <section class="container">
+        <div class="rooms-grid" id="roomsContainer">
+            <div class="room-card">
+                <img src="../img/Suite.jpg" alt="Suite Eiffel">
+                <div class="room-info">
+                    <h3>Suite Eiffel</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Vista panorámica</span>
+                        <span class="amenity">Lujo</span>
+                    </div>
+                    <p>Suite de lujo con impresionantes vistas a la Torre Eiffel</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€250/noche</strong><br>
+                            2 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/Deluxe.jpg" alt="Deluxe Louvre">
+                <div class="room-info">
+                    <h3>Deluxe Louvre</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Cerca del museo</span>
+                        <span class="amenity">Terraza</span>
+                    </div>
+                    <p>Habitación elegante a pocos pasos del museo del Louvre</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€220/noche</strong><br>
+                            2-3 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/familiar.jpg" alt="Familiar Notre Dame">
+                <div class="room-info">
+                    <h3>Familiar Notre Dame</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Familiar</span>
+                        <span class="amenity">Vista a la ciudad</span>
+                    </div>
+                    <p>Habitación espaciosa perfecta para familias cerca de Notre Dame</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€210/noche</strong><br>
+                            4-5 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/economica" alt="Económica Montmartre">
+                <div class="room-info">
+                    <h3>Económica Montmartre</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Económica</span>
+                        <span class="amenity">1-2 personas</span>
+                    </div>
+                    <p>Habitación acogedora en el vibrante barrio de Montmartre</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€90/noche</strong><br>
+                            1-2 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/Presidencial.jpg" alt="Presidencial Champs-Élysées">
+                <div class="room-info">
+                    <h3>Presidencial Champs-Élysées</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Lujo</span>
+                        <span class="amenity">Vista a la ciudad</span>
+                    </div>
+                    <p>Suite presidencial con vistas panorámicas a los Campos Elíseos</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€550/noche</strong><br>
+                            2 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/familiar2.jpg" alt="Familiar Saint-Germain">
+                <div class="room-info">
+                    <h3>Familiar Saint-Germain</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Familiar</span>
+                        <span class="amenity">Terraza</span>
+                    </div>
+                    <p>Amplia habitación familiar con terraza en el barrio Saint-Germain</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€280/noche</strong><br>
+                            4-5 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/moderna.jpg" alt="Moderna Le Marais">
+                <div class="room-info">
+                    <h3>Moderna Le Marais</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Con terraza</span>
+                        <span class="amenity">Vista a la ciudad</span>
+                    </div>
+                    <p>Habitación moderna con terraza en el trenddy barrio de Le Marais</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€190/noche</strong><br>
+                            2-3 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/Básica.jpeg" alt="Básica Latin Quarter">
+                <div class="room-info">
+                    <h3>Básica Latin Quarter</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Económica</span>
+                        <span class="amenity">1-2 personas</span>
+                    </div>
+                    <p>Habitación simple y acogedora en el animado Barrio Latino</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€75/noche</strong><br>
+                            1-2 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="../img/Gran.jpg" alt="Gran Suite Opera">
+                <div class="room-info">
+                    <h3>Gran Suite Opera</h3>
+                    <div class="room-amenities">
+                        <span class="amenity">Lujo</span>
+                        <span class="amenity">Vista panorámica</span>
+                    </div>
+                    <p>Suite de gran lujo con vistas espectaculares a la Ópera de París</p>
+                    <div class="room-details">
+                        <div>
+                            <strong>€420/noche</strong><br>
+                            2 personas
+                        </div>
+                        <a href="#" class="btn room-details-btn">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Subscription Section -->
+    <section class="subscription-section">
+        <h2>¡Suscríbete y Consigue un Descuento Exclusivo!</h2>
+        <p>Recibe ofertas especiales, descuentos únicos y novedades directamente en tu correo.</p>
+        <form class="subscription-form">
+            <input type="email" placeholder="Ingresa tu correo electrónico" required>
+            <button type="submit" class="btn">¡Quiero mi Descuento!</button>
+        </form>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>+849-286-2605</p>
+                <p>info@hotelparis.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Dirección</h4>
+                <p>12 Avenue des Champs-Élysées</p>
+                <p>75008 París, Francia</p>
+            </div>
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <p>Facebook | Instagram | Twitter</p>
+            </div>
+        </div>
+        <div style="margin-top: 20px; font-size: 0.8em;">
+            © 2025 Hotel Paris. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Modal de detalles de habitación -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalRoomTitle">Título de la habitación</h2>
+            <div id="modalRoomContent">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Manejo del modal de detalles
+        const roomDetailsBtns = document.querySelectorAll('.room-details-btn');
+        const modal = document.getElementById('roomModal');
+        const closeModal = document.querySelector('.close-modal');
+        const modalRoomTitle = document.getElementById('modalRoomTitle');
+        const modalRoomContent = document.getElementById('modalRoomContent');
+
+        roomDetailsBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const roomCard = this.closest('.room-card');
+                const roomTitle = roomCard.querySelector('h3').textContent;
+                const roomPrice = roomCard.querySelector('.room-details strong').textContent;
+                const roomDescription = roomCard.querySelector('p').textContent;
+                const roomImage = roomCard.querySelector('img').src;
+                const roomAmenities = Array.from(roomCard.querySelectorAll('.amenity')).map(amenity => amenity.textContent);
+                const roomCapacity = roomCard.querySelector('.room-details div').textContent.split('\n')[1].trim();
+
+                modalRoomTitle.textContent = roomTitle;
+                modalRoomContent.innerHTML = `
+                    <div style="display: flex; gap: 20px; margin-top: 20px;">
+                        <div style="flex: 1;">
+                            <img src="${roomImage}" alt="${roomTitle}" style="width: 100%; border-radius: 12px; max-height: 300px; object-fit: cover;">
+                        </div>
+                        <div style="flex: 1;">
+                            <h3>Descripción</h3>
+                            <p>${roomDescription}</p>
+                            <h3>Precio</h3>
+                            <p>${roomPrice}</p>
+                            <h3>Capacidad</h3>
+                            <p>${roomCapacity}</p>
+                            <h3>Amenidades</h3>
+                            <ul>
+                                ${roomAmenities.map(amenity => `<li>${amenity}</li>`).join('')}
+                                <li>WiFi gratuito</li>
+                                <li>Aire acondicionado</li>
+                                <li>Baño privado</li>
+                                <li>Minibar</li>
+                                <li>Servicio de limpieza diario</li>
+                            </ul>
+                            <a href="#" class="btn" style="margin-top: 15px;">Reservar ahora</a>
+                        </div>
+                    </div>
+                `;
+                modal.style.display = 'block';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
